@@ -22,10 +22,3 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
-# code-camp-2
-
-Change user owner files
-
-```
-sudo chown -R $USER:$USER ./codecamp2
-```
