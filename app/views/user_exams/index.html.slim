@@ -1,0 +1,26 @@
+.container.mt-5
+  h1.text-center.text-primary.mb-4 User Exams
+  .row.justify-content-center
+    .col
+      table.table.table-striped
+        thead
+          tr
+            th ID
+            th User
+            th Exam
+            th Score
+            th Status
+
+            th Actions
+        tbody
+          - @user_exams.each do |user_exam|
+            tr
+              td = user_exam.id
+              td = user_exam.user.username
+              td = user_exam.exam.title
+              td = user_exam.score
+              td = user_exam.status
+
+              td
+                = link_to 'Edit', edit_user_exam_path(user_exam), class: 'btn btn-warning btn-sm'
+                = link_to 'Delete', user_exam_path(user_exam), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm'

@@ -1,0 +1,22 @@
+.container.mt-5
+  h1.text-center.text-primary.mb-4 All Choices
+  .row.justify-content-center
+    .col
+      table.table.table-striped
+        thead
+          tr
+            th ID
+            th Content
+            th Correct
+            th Question
+            th Actions
+        tbody
+          - @choices.each do |choice|
+            tr
+              td = choice.id
+              td = choice.content
+              td = choice.correct ? 'Yes' : 'No'
+              td = choice.question.content
+              td
+                = link_to 'Edit', edit_choice_path(choice), class: 'btn btn-warning btn-sm'
+                = link_to 'Delete', choice_path(choice), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm'

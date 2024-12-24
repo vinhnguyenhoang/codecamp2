@@ -7,24 +7,40 @@
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <%# <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Member</a>
+            <%= link_to "Users", users_path  , class: "nav-link active"%>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="#">Courses</a>
+            <%= link_to "Exams", exams_path  , class: "nav-link active"%>
           </li>
-
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Blog</a>
+            <%= link_to "Questions", questions_path  , class: "nav-link active"%>
           </li>
-
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Event</a>
+            <%= link_to "Choices", choices_path  , class: "nav-link active"%>
           </li>
+          <li class="nav-item">
+            <%= link_to "User Exam", user_exams_path  , class: "nav-link active"%>
+          </li>
+          <li class="nav-item">
+            <%= link_to "User Answer", user_answers_path  , class: "nav-link active"%>
+          </li>
+          <% if user_signed_in? %>
+            <li class="nav-item">
+              <%= button_to "Logout", destroy_user_session_path, method: :delete, data: { turbo: "true" }, class: "nav-link active" %>
+            </li>
+          <%else%>
+            <li class="nav-item">
+              <%= link_to "Sign up", new_user_registration_path , class: "nav-link active"%>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Sign in", new_user_session_path  , class: "nav-link active"%>
+            </li>
+          <%end%>
         </ul>
-      </div> %>
+      </div>
     </div>
   </nav>
 </div>

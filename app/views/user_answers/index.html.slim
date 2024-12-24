@@ -1,0 +1,25 @@
+.container.mt-5
+  h1.text-center.text-primary.mb-4 User Answers
+  .row.justify-content-center
+    .col
+      table.table.table-striped
+        thead
+          tr
+            th ID
+            th User Exam
+            th Question
+            th Choice
+            th Answer
+            th Actions
+        tbody
+          - @user_answers.each do |user_answer|
+            tr
+              td = user_answer.id
+              td = user_answer.user_exam.id
+              td = user_answer.question.content
+              td = user_answer.choice.content
+              td
+                = user_answer.choice.correct ? "Yes" : "No"
+              td
+                = link_to 'Edit', edit_user_answer_path(user_answer), class: 'btn btn-warning btn-sm'
+                = link_to 'Delete', user_answer_path(user_answer), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm'

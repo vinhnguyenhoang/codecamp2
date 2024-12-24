@@ -1,0 +1,35 @@
+h1 New Exam
+= form_with(model: @exam, url: admin_exams_path, method: :post, local: true) do |f|
+  .form-group
+    = f.label :title
+    = f.text_field :title, class: 'form-control', required: true
+
+  .form-group
+    = f.label :duration
+    = f.number_field :duration, class: 'form-control', required: true, min: 1
+
+  .form-group
+    h2 Select Questions
+    table.table.table-striped.table-hover
+      thead
+        tr
+          th.text-center
+            = check_box_tag 'select_all', '', false, id: 'select_all'
+          th.text-center ID
+          th.text-center Content
+      tbody
+        - @questions.each do |question|
+          tr
+            td.text-center
+              = check_box_tag 'exam[question_ids][]', question.id, false, class: 'question-checkbox'
+            td.text-center = question.id
+            td.text-center = question.content
+
+  .form-group.mt-3
+    = f.submit 'Create Exam', class: 'btn btn-primary'
+
+javascript:
+  document.getElementById('select_all').addEventListener('change', function() {
+    const checkboxes = document.querySelectorAll('.question-checkbox');
+    checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+  });

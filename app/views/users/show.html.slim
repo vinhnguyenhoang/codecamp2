@@ -1,0 +1,14 @@
+.container.mt-5
+  .row.justify-content-center
+    .col-md-8
+      .card.shadow
+        .card-body
+          .text-center
+            h1.text-primary.mb-3
+              = @user.username
+              | 's Profile
+            p.text-muted.mb-4
+              strong Email:
+              |  #{@user.email}
+            - if current_user == @user
+              = link_to 'Edit Profile', edit_user_path(@user), class: 'btn btn-warning btn-sm'

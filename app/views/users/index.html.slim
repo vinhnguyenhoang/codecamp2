@@ -1,0 +1,20 @@
+.container.mt-5
+  h1.text-center.text-primary.mb-4 All Users
+  .row.justify-content-center
+    .col
+      table.table.table-striped.table-hover
+        thead
+          tr
+            th.text-center #No
+            th.text-center ID
+            th.text-center Username
+            th.text-center Email
+        tbody
+          - @users.each_with_index do |user, index|
+            - row_class = current_user == user ? 'table-warning' : ''
+            tr style="cursor: pointer" onclick="window.location='#{user_path(user)}'" class=row_class
+              td.text-center = index + 1
+              td.text-center
+                strong = user.id
+              td.text-center = user.username
+              td.text-center = user.email
