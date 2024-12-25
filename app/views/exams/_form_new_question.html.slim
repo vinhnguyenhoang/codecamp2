@@ -1,0 +1,43 @@
+/ _form.html.slim
+= form_with model: [@exam, @exam.questions.build], local: true, id: 'new_question_form' do |form|
+  .mb-3
+    = form.label :content, 'Question Content'
+    = form.text_area :content, class: 'form-control', placeholder: 'Enter question content'
+
+  fieldset
+    legend Choices
+    #choices
+      = form.fields_for :choices do |choice_form|
+        .choice.mb-2
+          = choice_form.label :content, 'Choice'
+          = choice_form.text_field :content, class: 'form-control', placeholder: 'Enter choice content'
+
+          .form-check.mt-2
+            = choice_form.check_box :correct, class: 'form-check-input'
+            = choice_form.label :correct, 'Correct Answer', class: 'form-check-label'
+
+    / Add more choices dynamically
+    button.btn.btn-secondary.mt-2 type="button" id="add-choice" Add Choice
+
+  .mt-3.text-center
+    = form.submit 'Save Question', class: 'btn btn-primary'
+
+javascript:
+  document.addEventListener("DOMContentLoaded", () => {
+    let choiceIndex = #{@question.choices.size};
+
+    document.getElementById('add-choice').addEventListener('click', () => {
+      const choicesDiv = document.getElementById('choices');
+      const newChoice = `
+        <div class='choice mb-2'>
+          <label for='question_choices_attributes_${choiceIndex}_content'>Choice</label>
+          <input type='text' name='question[choices_attributes][${choiceIndex}][content]' id='question_choices_attributes_${choiceIndex}_content' class='form-control' placeholder='Enter choice content'>
+          <div class='form-check mt-2'>
+            <input type='checkbox' name='question[choices_attributes][${choiceIndex}][correct]' id='question_choices_attributes_${choiceIndex}_correct' class='form-check-input'>
+            <label class='form-check-label' for='question_choices_attributes_${choiceIndex}_correct'>Correct Answer</label>
+          </div>
+        </div>`;
+      choicesDiv.insertAdjacentHTML('beforeend', newChoice);
+      choiceIndex++;
+    });
+  });

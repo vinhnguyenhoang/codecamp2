@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_24_041914) do
+ActiveRecord::Schema[7.2].define(version: 2024_12_25_034805) do
   create_table "choices", force: :cascade do |t|
     t.string "content"
     t.boolean "correct"
@@ -27,18 +27,23 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_24_041914) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "exams_questions", id: false, force: :cascade do |t|
+    t.integer "exam_id", null: false
+    t.integer "question_id", null: false
+    t.index ["exam_id"], name: "index_exams_questions_on_exam_id"
+    t.index ["question_id"], name: "index_exams_questions_on_question_id"
+  end
+
   create_table "questions", force: :cascade do |t|
     t.string "content"
-    t.integer "exam_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["exam_id"], name: "index_questions_on_exam_id"
   end
 
   create_table "user_answers", force: :cascade do |t|
     t.integer "user_exam_id", null: false
     t.integer "question_id", null: false
-    t.integer "choice_id", null: false
+    t.integer "choice_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["choice_id"], name: "index_user_answers_on_choice_id"
@@ -73,7 +78,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_24_041914) do
   end
 
   add_foreign_key "choices", "questions"
-  add_foreign_key "questions", "exams"
+  add_foreign_key "exams_questions", "exams"
+  add_foreign_key "exams_questions", "questions"
   add_foreign_key "user_answers", "choices"
   add_foreign_key "user_answers", "questions"
   add_foreign_key "user_answers", "user_exams"

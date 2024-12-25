@@ -3,14 +3,14 @@ Rails.application.routes.draw do
   get "exams/show"
   namespace :admin do
     resources :exams
+    resources :questions
+    resources :choices
   end
   devise_for :users
   resources :users
   resources :user_exams
   resources :user_answers
-  resources :questions
-  resources :exams
-  resources :choices
+
   root "home#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

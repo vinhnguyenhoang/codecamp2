@@ -14,7 +14,7 @@
             th.text-center Action
         tbody
           - @exams.each_with_index do |exam, index|
-            tr style="cursor: pointer" onclick="window.location='#{exam_path(exam)}'"
+            tr style="cursor: pointer" onclick="window.location='#{admin_exams_path(exam)}'"
               td.text-center = index + 1
               td.text-center
                 strong = exam.id
@@ -24,5 +24,5 @@
                 = exam.created_at.in_time_zone('Asia/Ho_Chi_Minh').strftime("%Y-%m-%d %H:%M")
               td
                 = link_to 'Edit', edit_exam_path(exam), class: 'btn btn-warning btn-sm'
-                = link_to 'Delete', exam_path(exam), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm'
+                = button_to 'Delete', admin_exams_path(exam), method: :delete, data: { confirm: 'Are you sure?' }, local: false, class: 'btn btn-danger btn-sm', onclick: 'event.stopPropagation();'
 

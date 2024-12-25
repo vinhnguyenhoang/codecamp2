@@ -22,4 +22,4 @@
                 = user_answer.choice.correct ? "Yes" : "No"
               td
                 = link_to 'Edit', edit_user_answer_path(user_answer), class: 'btn btn-warning btn-sm'
-                = link_to 'Delete', user_answer_path(user_answer), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm'
+                = link_to 'Delete', user_answer_path(user_answer), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm', onclick: 'event.stopPropagation();'

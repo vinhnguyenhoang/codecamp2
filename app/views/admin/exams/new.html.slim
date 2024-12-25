@@ -1,5 +1,5 @@
 h1 New Exam
-= form_with(model: @exam, url: admin_exams_path, method: :post, local: true) do |f|
+= form_with(url: admin_exams_path, method: :post, local: true) do |f|
   .form-group
     = f.label :title
     = f.text_field :title, class: 'form-control', required: true
@@ -9,7 +9,15 @@ h1 New Exam
     = f.number_field :duration, class: 'form-control', required: true, min: 1
 
   .form-group
-    h2 Select Questions
+    h2.mt-4 Select Questions
+    / = link_to 'New question', new_question_path, class: 'btn btn-success btn-sm px-5'
+    / div.mt-3
+    /   a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseNewQuestion" role="button" aria-expanded="false" aria-controls="collapseNewQuestion"
+    /     | Link with href
+    / #collapseNewQuestion.collapse
+    /   .card.card-body
+    /     | = render partial: 'form_new_question'
+
     table.table.table-striped.table-hover
       thead
         tr
@@ -29,7 +37,9 @@ h1 New Exam
     = f.submit 'Create Exam', class: 'btn btn-primary'
 
 javascript:
-  document.getElementById('select_all').addEventListener('change', function() {
-    const checkboxes = document.querySelectorAll('.question-checkbox');
-    checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+  $(document).ready(function () {
+    $('#select_all').on('change', function() {
+      const checkboxes = $('.question-checkbox');
+      checkboxes.prop('checked', this.checked);
+    });
   });

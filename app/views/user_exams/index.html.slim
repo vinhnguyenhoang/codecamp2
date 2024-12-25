@@ -14,7 +14,7 @@
             th Actions
         tbody
           - @user_exams.each do |user_exam|
-            tr
+            tr style="cursor: pointer" onclick="window.location='#{user_exam_path(user_exam)}'"
               td = user_exam.id
               td = user_exam.user.username
               td = user_exam.exam.title
@@ -23,4 +23,4 @@
 
               td
                 = link_to 'Edit', edit_user_exam_path(user_exam), class: 'btn btn-warning btn-sm'
-                = link_to 'Delete', user_exam_path(user_exam), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm'
+                = link_to 'Delete', user_exam_path(user_exam), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm', onclick: 'event.stopPropagation();'

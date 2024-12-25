@@ -1,0 +1,43 @@
+h1 = @exam.title
+h2 Duration: #{@exam.duration} minutes
+
+= form_with( url: user_exams_path(@exam), method: :post, local: true) do |f|
+  = f.hidden_field "user_exam[user_id]", value: current_user.id
+  = f.hidden_field "user_exam[exam_id]", value: @exam.id
+  - @exam.questions.each_with_index do |question, index|
+    .question-block
+      h3 Question #{index + 1}: #{question.content}
+      - question.choices.each do |choice|
+        .choice-option
+          = radio_button_tag "user_exam[answers][#{question.id}]", choice.id, false, id: "choice_#{choice.id}", class: 'form-check-input'
+          = label_tag "choice_#{choice.id}", choice.content, class: 'form-check-label'
+
+  .form-group.mt-3
+    = f.submit 'Submit Exam', class: 'btn btn-success'
+
+javascript:
+  $(document).ready(function () {
+    let timer = #{@exam.duration} * 60;
+    function updateTimerDisplay() {
+      const minutes = Math.floor(timer / 60);
+      const seconds = timer % 60;
+      $('#timer').text(`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
+    }
+
+    updateTimerDisplay();
+    const countdown = setInterval(() => {
+      if (timer <= 0) {
+        clearInterval(countdown);
+        alert('Time is up! Submitting your exam.');
+        $('form').submit();
+      } else {
+        timer--;
+        updateTimerDisplay();
+      }
+    }, 1000);
+  });
+
+/ Timer Display
+.timer-block
+  h3 Timer:
+  span#timer

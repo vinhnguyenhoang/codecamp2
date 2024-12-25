@@ -10,10 +10,12 @@ class ExamsController < ApplicationController
   def new
     @questions = Question.all
   end
+
   def edit
     @exam = Exam.find(params[:id])
     @questions = Question.all
   end
+
   def update
     exam = Exam.find(params[:id])
     question_ids = params[:exam][:question_ids]
@@ -22,9 +24,18 @@ class ExamsController < ApplicationController
     question_ids.each do |q_id|
       exam.questions << Question.find(q_id)
     end
-    redirect_to exams_path
+    redirect_to admin_exams_path
+  end
 
+  def destroy
+    @exam = Exam.find(params[:id])
+    if @exam.destroy
+      flash[:notice] = 'Exam was successfully deleted.'
+    else
+      flash[:alert] = 'Failed to delete exam.'
+    end
 
+    redirect_to admin_exams_path
   end
 
   def create
@@ -34,7 +45,7 @@ class ExamsController < ApplicationController
       question_ids.each do |q_id|
         exam.questions << Question.find(q_id)
       end
-      redirect_to exams_path
+      redirect_to admin_exams_path
     else
       render json: { error: "Unable to save exam" }, status: :unprocessable_entity
     end

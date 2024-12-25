@@ -1,0 +1,25 @@
+.container.mt-5
+  h1.text-center.text-primary.mb-4 Question Details
+
+  .row.justify-content-center
+    .col-md-8
+      .card
+        .card-header.text-white.bg-primary
+          h4.text-center.mb-0
+            | "Question: #{@question.id}"
+
+        .card-body
+          h5 Content:
+          p.text-muted= @question.content
+
+          h5 Choices:
+          ul.list-group
+            - @question.choices.each do |choice|
+              - correct_class =  choice.correct ? "bg-warning-subtle" : ""
+              li class = "list-group-item #{correct_class}"
+                = choice.content
+
+          .d-flex.mt-4
+            = link_to 'Back', admin_questions_path, class: 'btn btn-secondary btn-sm mx-3'
+            = link_to 'Edit', edit_admin_question_path(@question), class: 'btn btn-warning btn-sm mx-3'
+            = link_to 'Delete', admin_question_path(@question), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm mx-3'

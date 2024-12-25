@@ -8,14 +8,12 @@
           tr
             th ID
             th Content
-            th Exam
             th Actions
         tbody
           - @questions.each do |question|
             tr
               td = question.id
               td = question.content
-              td = question.exam.title
               td
                 = link_to 'Edit', edit_question_path(question), class: 'btn btn-warning btn-sm'
-                = link_to 'Delete', question_path(question), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm'
+                = link_to 'Delete', question_path(question), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm', onclick: 'event.stopPropagation();'

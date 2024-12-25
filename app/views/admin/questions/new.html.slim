@@ -1,6 +1,6 @@
 h1 New Question
 
-= form_with(url: questions_path, method: :post, local: true) do |f|
+= form_with(url: admin_questions_path, method: :post, local: true) do |f|
   - if @question.errors.any?
     #error_explanation
       h2= "#{pluralize(@question.errors.count, "error")} prohibited this question from being saved:"
@@ -20,25 +20,25 @@ h1 New Question
   .form-group
     = f.submit "Create Question", class: 'btn btn-primary mt-3', data: { disable_with: false }
 
-= link_to 'Back', questions_path, class: 'btn btn-secondary mt-5'
+= link_to 'Back', admin_questions_path, class: 'btn btn-secondary mt-5'
 
 javascript:
   $(document).ready(function() {
     var choiceCount = 0;
-    var correctCount = $('input[type="checkbox"]:checked').length;
+
     // Add event to dynamically added elements
     $(document).on('change', 'input[type="checkbox"]', function() {
-    var $checkboxes = $('input[type="checkbox"]');
+      var $checkboxes = $('input[type="checkbox"]');
 
-    if ($(this).is(':checked')) {
-      // Disable all other checkboxes
-      $checkboxes.prop('disabled', true);
-      $(this).prop('disabled', false); // Enable the clicked checkbox
-    } else {
-      // Enable all checkboxes when unchecked
-      $checkboxes.prop('disabled', false);
-    }
-  });
+      if ($(this).is(':checked')) {
+        // Disable all other checkboxes
+        $checkboxes.prop('disabled', true);
+        $(this).prop('disabled', false); // Enable the clicked checkbox
+      } else {
+        // Enable all checkboxes when unchecked
+        $checkboxes.prop('disabled', false);
+      }
+    });
 
     $('form').on('submit', function(event) {
       var choiceFields = $('.choice-fields');
@@ -46,10 +46,6 @@ javascript:
       if (choiceFields.length < 2) {
         event.preventDefault();
         alert("You must provide at least 2 choices.");
-      }
-      if (correctCount !== 1) {
-        event.preventDefault();
-        alert("You must select exactly one correct answer.");
       }
     });
     $('#add-choice').on('click', function(event) {

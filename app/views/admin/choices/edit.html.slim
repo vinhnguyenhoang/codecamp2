@@ -1,0 +1,16 @@
+h1 Edit Choice
+= form_with(url: admin_choice_path(@choice), local: true) do |f|
+  .form-group
+    = f.label :content
+    = f.text_field :content, class: 'form-control', required: true, value: @choice.content
+
+  .form-group
+    = f.label :correct
+    .form-check
+      = f.radio_button :correct, true, class: 'form-check-input', required: true, id: 'correct_true', checked: @choice.correct == true
+      = f.label :correct_true, 'Correct', class: 'form-check-label'
+    .form-check
+      = f.radio_button :correct, false, class: 'form-check-input', required: true, id: 'correct_false', checked: @choice.correct == false
+      = f.label :correct_false, 'Incorrect', class: 'form-check-label'
+  .form-group.mt-3
+    = f.submit "Update", class: "btn btn-primary"

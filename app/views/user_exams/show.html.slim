@@ -1,0 +1,41 @@
+h1 User Exam Result
+
+.container.mt-4
+  .row.mb-3
+    .col-md-6
+      h3 User Information
+      p
+        | "Username:  #{@user_exam.user.username}"
+      p
+        | "Email: #{@user_exam.user.email}"
+    .col-md-6.text-md-end
+      h3 Exam Information
+      p
+        | "Exam Title: #{@user_exam.exam.title}"
+      p
+        | "Score: #{@user_exam.score}/#{@user_exam.exam.questions.size}"
+
+  h4.mt-4 Answers
+  table.table.table-striped.mt-3
+    thead
+      tr
+        th #
+        th Question
+        th Your Answer
+        th Correct Answer
+        th Result
+    tbody
+      - @user_exam.user_answers.each_with_index do |answer, index|
+        tr
+          td = index + 1
+          td = answer.question.content
+          td = answer.choice.content
+          td = answer.question.correct_choice.content
+          td
+            - if answer.choice.correct?
+              span.badge.bg-success Correct
+            - else
+              span.badge.bg-danger Incorrect
+
+  .mt-4.text-center
+    = link_to 'Back to Exams', user_exams_path, class: 'btn btn-primary'
