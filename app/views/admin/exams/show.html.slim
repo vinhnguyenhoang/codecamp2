@@ -1,43 +1,80 @@
-h1 = @exam.title
-h2 Duration: #{@exam.duration} minutes
+/ app/views/user_exams/show.html.slim
+.container.mt-5
+  h1.mb-4 = @exam.title
+  h2.mb-3 Duration: #{@exam.duration} minutes
 
-= form_with( url: user_exams_path(@exam), method: :post, local: true) do |f|
-  = f.hidden_field "user_exam[user_id]", value: current_user.id
-  = f.hidden_field "user_exam[exam_id]", value: @exam.id
-  - @exam.questions.each_with_index do |question, index|
-    .question-block
-      h3 Question #{index + 1}: #{question.content}
-      - question.choices.each do |choice|
-        .choice-option
-          = radio_button_tag "user_exam[answers][#{question.id}]", choice.id, false, id: "choice_#{choice.id}", class: 'form-check-input'
-          = label_tag "choice_#{choice.id}", choice.content, class: 'form-check-label'
+  / Timer Block
+  .timer-block.mb-4
+    h3 Timer:
+    span#timer.h4.text-danger
+      | #{@exam.duration}:00
+  #btn-start.btn.btn-primary.px-5.mb-4 Start
+  = form_with url: user_exams_path(@exam), method: :post, local: true do |f|
+    = f.hidden_field "user_exam[user_id]", value: current_user.id
+    = f.hidden_field "user_exam[exam_id]", value: @exam.id
+    = f.hidden_field "user_exam[start_time]", id: 'start_time'
+    = f.hidden_field "user_exam[submit_time]", id: 'submit_time'
 
-  .form-group.mt-3
-    = f.submit 'Submit Exam', class: 'btn btn-success'
+    - @exam.questions.each_with_index do |question, index|
+      .question-block.mb-4
+        h5 Question #{index + 1}: #{question.content}
 
+        - question.choices.each do |choice|
+          .form-check
+            = radio_button_tag "user_exam[answers][#{question.id}]", choice.id, false, id: "choice_#{choice.id}", class: 'form-check-input'
+            = label_tag "choice_#{choice.id}", choice.content, class: 'form-check-label'
+
+    .form-group.mt-3
+      = f.submit 'Submit Exam', class: 'btn btn-success btn-lg', id: "btn-submit"
 javascript:
   $(document).ready(function () {
+    $('#btn-submit').prop('disabled', true);
     let timer = #{@exam.duration} * 60;
+    let start_time;
+
     function updateTimerDisplay() {
       const minutes = Math.floor(timer / 60);
       const seconds = timer % 60;
       $('#timer').text(`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
     }
 
-    updateTimerDisplay();
-    const countdown = setInterval(() => {
-      if (timer <= 0) {
-        clearInterval(countdown);
-        alert('Time is up! Submitting your exam.');
-        $('form').submit();
-      } else {
-        timer--;
-        updateTimerDisplay();
-      }
-    }, 1000);
-  });
+    $('#btn-start').click(function () {
+      $(this).prop('hidden', true);
+      $('#btn-submit').prop('disabled', false);
+      start_time = new Date();
+      $('#start_time').val(start_time);
+      countdown = setInterval(() => {
+        if (timer <= 0) {
+          clearInterval(countdown);
+          alert('Time is up! Submitting your exam.');
+          $('form').submit();
+        } else {
+          timer--;
+          updateTimerDisplay();
+        }
+      }, 1000);
+    });
 
-/ Timer Display
-.timer-block
-  h3 Timer:
-  span#timer
+    $('#btn-submit').click(function (e) {
+      e.preventDefault();
+      let unansweredQuestions = false;
+
+      // Iterate through each question and check if it has an unanswered radio button
+      $('input[type="radio"]').each(function () {
+        const questionId = $(this).attr('name').match(/\[(\d+)\]/)[1];
+        const isChecked = $(`input[name="user_exam[answers][${questionId}]"]:checked`).length > 0;
+        if (!isChecked) {
+          unansweredQuestions = true;
+          return false; // Exit early if we find an unanswered question
+        }
+      });
+
+      if ((unansweredQuestions && timer > 0 && confirm('You have unanswered questions. Are you sure you want to submit?')) ||
+          (!unansweredQuestions && timer > 0 && confirm('Are you sure you want to submit?')) ||
+          (timer === 0)) {
+        let submit_time = new Date();
+        $('#submit_time').val(submit_time);
+        $(this).closest('form').submit();
+      }
+    });
+  });

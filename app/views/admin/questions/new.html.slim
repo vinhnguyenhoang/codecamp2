@@ -26,31 +26,59 @@ javascript:
   $(document).ready(function() {
     var choiceCount = 0;
 
-    // Add event to dynamically added elements
-    $(document).on('change', 'input[type="checkbox"]', function() {
-      var $checkboxes = $('input[type="checkbox"]');
+    // Check at least one checkbox is selected and all fields are filled
+    function validateForm() {
+      var isValid = true;
+      var hasCorrectAnswer = false;
 
+      $('.choice-fields').each(function() {
+        var content = $(this).find('input[type="text"]').val().trim();
+        var isChecked = $(this).find('input[type="checkbox"]').is(':checked');
+
+        if (!content) {
+          isValid = false;
+        }
+        if (isChecked) {
+          hasCorrectAnswer = true;
+        }
+      });
+
+      if (!isValid) {
+        alert("All choice fields must be filled.");
+      }
+      if (!hasCorrectAnswer) {
+        alert("You must select at least one correct answer.");
+      }
+
+      return isValid && hasCorrectAnswer;
+    }
+
+    // Checkbox logic: chỉ cho phép chọn 1 checkbox là đúng
+    $(document).on('change', 'input[type="checkbox"]', function() {
+      $('input[type="checkbox"]').prop('disabled', false);
       if ($(this).is(':checked')) {
-        // Disable all other checkboxes
-        $checkboxes.prop('disabled', true);
-        $(this).prop('disabled', false); // Enable the clicked checkbox
-      } else {
-        // Enable all checkboxes when unchecked
-        $checkboxes.prop('disabled', false);
+        $('input[type="checkbox"]').prop('disabled', true);
+        $(this).prop('disabled', false); // Đảm bảo checkbox được chọn vẫn kích hoạt
       }
     });
 
+    // Form submission validation
     $('form').on('submit', function(event) {
       var choiceFields = $('.choice-fields');
-      // At least 2 choices
       if (choiceFields.length < 2) {
         event.preventDefault();
         alert("You must provide at least 2 choices.");
+        return;
+      }
+      if (!validateForm()) {
+        event.preventDefault(); // Ngăn form submit nếu không đạt yêu cầu
       }
     });
+
+    // Add new choice
     $('#add-choice').on('click', function(event) {
       event.preventDefault();
-      if (choiceCount < 5 ) {
+      if (choiceCount < 5) {
         choiceCount++;
         var newChoice = `
           <div class="choice-fields mt-3">
@@ -67,3 +95,4 @@ javascript:
       }
     });
   });
+

@@ -6,6 +6,7 @@ class CreateUserExams < ActiveRecord::Migration[7.2]
       t.integer :score
       t.string :status
       t.datetime :start_time
+      t.datetime :submit_time
 
       t.timestamps
     end

@@ -1,0 +1,28 @@
+.container.mt-5
+  h1.mb-5.text-center.text-primary Exam Report: #{@exam.title}
+  .d-flex.justify-content-center
+    .chart style="width: 400px; height: 400px;"
+      canvas#score-chart
+
+javascript:
+  var chartData = #{raw @chart_data.to_json};
+  var ctx = document.getElementById('score-chart').getContext('2d');
+  var scoreChart = new Chart(ctx, {
+    type: 'pie',
+    data: chartData,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+        },
+        tooltip: {
+          callbacks: {
+            label: function(tooltipItem) {
+              return tooltipItem.label + ': ' + tooltipItem.raw + ' users';
+            }
+          }
+        }
+      }
+    }
+  });

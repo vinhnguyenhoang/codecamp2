@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_12_25_034805) do
+ActiveRecord::Schema[7.2].define(version: 2025_01_06_090030) do
   create_table "choices", force: :cascade do |t|
     t.string "content"
     t.boolean "correct"
@@ -46,6 +46,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_25_034805) do
     t.integer "choice_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "times"
     t.index ["choice_id"], name: "index_user_answers_on_choice_id"
     t.index ["question_id"], name: "index_user_answers_on_question_id"
     t.index ["user_exam_id"], name: "index_user_answers_on_user_exam_id"
@@ -57,6 +58,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_12_25_034805) do
     t.integer "score"
     t.string "status"
     t.datetime "start_time"
+    t.datetime "submit_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["exam_id"], name: "index_user_exams_on_exam_id"

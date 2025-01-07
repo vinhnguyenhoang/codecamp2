@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :exams
     resources :questions
     resources :choices
+    resources :reports, only: %i[index show]
   end
   devise_for :users
   resources :users

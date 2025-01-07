@@ -23,8 +23,12 @@ class Admin::ChoicesController < ApplicationController
   end
 
   def destroy
-    choice = Choice.destroy(params[:id])
-    if choice
+    choice = Choice.find(params[:id])
+    if(choice.correct){
+      flash[:alert] = "This is the answer of question:  #{choice.question.content} "
+      redirect_to admin_choices_path
+    }
+    if choice.destroy
       flash[:notice] = "Destroy choice successful"
     else
       flash[:alert] = "Destroy choice successful"

@@ -4,6 +4,9 @@
 User.create!(username: 'admin', email: 'admin@gmail.com', password: 'password', role: 1) # Admin
 User.create!(username: 'user1', email: 'user1@gmail.com', password: 'password', role: 0) # Regular user
 User.create!(username: 'user2', email: 'user2@gmail.com', password: 'password', role: 0)
+User.create!(username: 'user3', email: 'user3@gmail.com', password: 'password', role: 0)
+User.create!(username: 'user4', email: 'user4@gmail.com', password: 'password', role: 0)
+User.create!(username: 'user5', email: 'user5@gmail.com', password: 'password', role: 0)
 
 # Create Exams
 exam1 = Exam.create!(title: 'Ruby Basics', duration: 15)
