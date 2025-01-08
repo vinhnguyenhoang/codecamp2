@@ -17,3 +17,5 @@ ENV BUNDLE_GEMFILE=$DIR/Gemfile \
   BUNDLE_PATH=/bundle
 
 RUN bundle install
+RUN bundle exec rails db:migrate
+RUN bundle exec rails db:seed

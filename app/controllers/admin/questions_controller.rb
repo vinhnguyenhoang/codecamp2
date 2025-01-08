@@ -14,20 +14,7 @@ class Admin::QuestionsController < ApplicationController
   end
 
   def create
-    question_data = question_params
-    choices_data = question_data[:choices]
-    @question = Question.new(content: question_data[:content])
-    if choices_data.keys.length < 2
-      flash[:alert] = "You must provide at least 2 choices."
-      render :new
-      return
-    end
-    choices_data.each do |_key, choice|
-      @question.choices.build(
-        content: choice[:content],
-        correct: choice[:correct] == 'on'
-      )
-    end
+    @question = Question.new(question_params)
     if @question.save
       redirect_to admin_question_path(@question), notice: "Question was successfully created."
     else
@@ -63,8 +50,14 @@ class Admin::QuestionsController < ApplicationController
   def question_params
     params.require(:question).permit(
       :content,
-      choices: [:content, :correct]
-    )
+      choices_attributes: [:content, :correct]
+    ).tap do |question_params|
+      if question_params[:choices_attributes]
+        question_params[:choices_attributes].each do |choice|
+          choice[:correct] = choice[:correct] == 'on' ? true : false
+        end
+      end
+    end
   end
 
   def require_admin

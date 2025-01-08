@@ -1,6 +1,6 @@
 h1 New Question
 
-= form_with(url: admin_questions_path, method: :post, local: true) do |f|
+= form_with(model: @question, url: admin_questions_path, method: :post, local: true) do |f|
   - if @question.errors.any?
     #error_explanation
       h2= "#{pluralize(@question.errors.count, "error")} prohibited this question from being saved:"
@@ -83,10 +83,10 @@ javascript:
         var newChoice = `
           <div class="choice-fields mt-3">
             <label for="choices_${choiceCount}_content">Choice Content</label>
-            <input type="text" name="question[choices][${choiceCount}][content]" id="choices_${choiceCount}_content" class="form-control" />
+            <input type="text" name="question[choices_attributes][][content]" id="choices_${choiceCount}_content" class="form-control" />
 
             <label for="choices_${choiceCount}_correct">Correct Answer?</label>
-            <input type="checkbox" name="question[choices][${choiceCount}][correct]" id="choices_${choiceCount}_correct" />
+            <input type="checkbox" name="question[choices_attributes][][correct]" id="choices_${choiceCount}_correct" />
           </div>
         `;
         $('#choices-container').append(newChoice);
